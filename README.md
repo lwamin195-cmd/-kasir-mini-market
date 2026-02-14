@@ -111,10 +111,4 @@ Cetak struk
 
 ---
 
-## 🚀 Tips Biar Keren di GitHub
-- Tambahin screenshot aplikasi kamu 📸
-- Kasih icon emoji biar menarik 😎
-- Upload file `.sql` juga biar gampang dipakai orang lain
-
----
 
