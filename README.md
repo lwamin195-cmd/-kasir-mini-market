@@ -1,57 +1,72 @@
-README.md
-# 🛒 Aplikasi Kasir Mini Market
+📄 README.md (Lengkap + Step by Step)
+# 🛒 APLIKASI KASIR MINI MARKET
 
-Aplikasi kasir sederhana berbasis **Java Swing** dan **MariaDB** untuk membantu proses transaksi penjualan pada mini market.
+Aplikasi kasir sederhana berbasis **Java Swing** dan **MariaDB** yang digunakan untuk melakukan transaksi penjualan pada mini market.
 
 ---
 
-## 📌 Fitur Utama
+## 📌 DESKRIPSI
 
-- ✅ Pilih barang (ComboBox)
-- ✅ Menampilkan harga otomatis
-- ✅ Input jumlah beli
+Aplikasi ini dibuat untuk membantu proses transaksi seperti:
+- Memilih barang
+- Menampilkan harga otomatis
+- Menghitung total belanja
+- Menghitung kembalian
+- Menyimpan data ke database
+
+---
+
+## 🚀 FITUR UTAMA
+
+- ✅ ComboBox pilih barang
+- ✅ Harga barang otomatis muncul
 - ✅ Hitung total harga otomatis
-- ✅ Input jumlah bayar
 - ✅ Hitung kembalian otomatis
-- ✅ Koneksi database (MariaDB)
-- ✅ Penyimpanan data barang & transaksi
+- ✅ Koneksi ke database MariaDB
+- ✅ Penyimpanan data transaksi
 
 ---
 
-## 🖥️ Tampilan Aplikasi
-
-- Form Kasir:
-  - Nama Barang
-  - Harga Barang
-  - Jumlah Beli
-  - Total Harga
-  - Jumlah Bayar
-  - Kembalian
-
----
-
-## 🛠️ Teknologi yang Digunakan
+## 🛠️ TEKNOLOGI
 
 - Java (Swing GUI)
-- MariaDB / MySQL
-- JDBC (Java Database Connectivity)
 - NetBeans IDE
+- MariaDB / MySQL
+- JDBC
 
 ---
 
-## 🗄️ Struktur Database
+## 🗄️ DATABASE SETUP
 
-### Database: `kasir_db`
+### 1. Buat Database
 
-#### Tabel: `barang`
+Jalankan di HeidiSQL / phpMyAdmin:
+
 ```sql
+CREATE DATABASE kasir_db;
+
+
+Jika error "database exists", berarti sudah ada → lanjut saja
+
+2. Gunakan Database
+USE kasir_db;
+
+3. Buat Tabel Barang
 CREATE TABLE barang (
     id_barang INT AUTO_INCREMENT PRIMARY KEY,
     nama_barang VARCHAR(50),
     harga INT
 );
 
-Tabel: transaksi
+4. Input Data Barang
+INSERT INTO barang (nama_barang, harga) VALUES
+('Susu', 3000000),
+('Teh', 4000000),
+('Coklat', 5000000),
+('Panda', 100000),
+('Adamsari', 500000);
+
+5. Buat Tabel Transaksi
 CREATE TABLE transaksi (
     id_transaksi INT AUTO_INCREMENT PRIMARY KEY,
     tanggal DATE,
@@ -60,53 +75,175 @@ CREATE TABLE transaksi (
     kembalian INT
 );
 
-🔌 Konfigurasi Database
+🔌 KONEKSI DATABASE (JAVA)
 
-Pastikan MariaDB sudah berjalan, lalu gunakan konfigurasi berikut di Java:
+Tambahkan kode berikut:
 
-Connection conn = DriverManager.getConnection(
-    "jdbc:mysql://localhost:3306/kasir_db",
-    "root",
-    ""
-);
+import java.sql.Connection;
+import java.sql.DriverManager;
 
-▶️ Cara Menjalankan
+public class Koneksi {
+    public static Connection getKoneksi() {
+        try {
+            Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/kasir_db",
+                "root",
+                ""
+            );
+            return conn;
+        } catch (Exception e) {
+            System.out.println("Koneksi Gagal: " + e.getMessage());
+            return null;
+        }
+    }
+}
 
-Buka project di NetBeans
+💻 LOGIKA PROGRAM
+1. Menampilkan Harga Otomatis
+String NamaBarang = (String) nama_barang.getSelectedItem();
 
-Jalankan XAMPP / MariaDB
+switch (NamaBarang) {
+    case "Susu":
+        harga_barang.setText("3000000");
+        break;
+    case "Teh":
+        harga_barang.setText("4000000");
+        break;
+    case "Coklat":
+        harga_barang.setText("5000000");
+        break;
+    case "Panda":
+        harga_barang.setText("100000");
+        break;
+    case "Adamsari":
+        harga_barang.setText("500000");
+        break;
+}
 
-Import database atau jalankan query SQL
+2. Hitung Total Harga
+int harga = Integer.parseInt(harga_barang.getText());
+int jumlah = Integer.parseInt(jumlah_beli.getText());
 
-Run project
+int total = harga * jumlah;
 
-Gunakan aplikasi kasir
+jumlah_harga.setText(String.valueOf(total));
 
-📸 Screenshot (Opsional)
+3. Hitung Kembalian
+int total = Integer.parseInt(jumlah_harga.getText());
+int bayar = Integer.parseInt(jumlah_bayar.getText());
 
-Tambahkan screenshot aplikasi di sini untuk memperjelas tampilan.
+int kembalian = bayar - total;
 
-👨‍💻 Author
+jumlah_kembalian.setText(String.valueOf(kembalian));
+
+▶️ CARA MENJALANKAN APLIKASI
+🔹 STEP 1: Jalankan Database
+
+Buka XAMPP / MariaDB
+
+Start MySQL / MariaDB
+
+🔹 STEP 2: Setup Database
+
+Buka HeidiSQL
+
+Jalankan semua query SQL di atas
+
+🔹 STEP 3: Buka Project di NetBeans
+
+File → Open Project
+
+Pilih folder project kamu
+
+🔹 STEP 4: Tambahkan Library MySQL
+
+Klik kanan project
+
+Properties → Libraries
+
+Add JAR → pilih mysql-connector
+
+🔹 STEP 5: Jalankan Program
+
+Klik tombol Run (▶️)
+
+Aplikasi kasir akan muncul
+
+📸 TAMPILAN APLIKASI
+
+Form terdiri dari:
+
+Nama Barang (ComboBox)
+
+Harga Barang
+
+Jumlah Beli
+
+Total Harga
+
+Jumlah Bayar
+
+Kembalian
+
+❗ TROUBLESHOOTING
+❌ Error: Can't connect to server
+
+✔ Solusi:
+
+Pastikan MariaDB/XAMPP sudah jalan
+
+❌ Database tidak muncul
+
+✔ Solusi:
+
+Klik kanan → Refresh di HeidiSQL
+
+❌ Table tidak muncul
+
+✔ Solusi:
+
+USE kasir_db;
+SHOW TABLES;
+
+❌ Error database exists
+
+✔ Solusi:
+
+Tidak perlu buat ulang database
+
+Langsung pakai saja
+
+👨‍💻 AUTHOR
 
 Nama: Amin
 
 Project: Aplikasi Kasir Mini Market
 
-Tujuan: Tugas / Pembelajaran Java & Database
+Tujuan: Tugas Pemrograman Java + Database
 
-📌 Catatan
+🔥 PENGEMBANGAN KE DEPAN
 
-Aplikasi ini masih versi sederhana dan dapat dikembangkan lebih lanjut seperti:
+Login User
 
-Login user
+Cetak Struk
 
-Laporan transaksi
+Laporan Transaksi
 
-Stok barang
+Manajemen Stok
 
-Cetak struk
+Scan Barcode
 
-🔥 Selamat ngoding dan semoga lancar bro!
+⭐ PENUTUP
+
+Project ini masih versi sederhana, namun sudah mencakup dasar:
+
+GUI
+
+Logika Program
+
+Database
+
+Cocok untuk pembelajaran dan pengembangan lebih lanjut 🚀
 
 
 ---
