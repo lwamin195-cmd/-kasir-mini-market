@@ -1,0 +1,50 @@
+4.4 Implementasi Database
+Database digunakan untuk menyimpan data transaksi.
+1. Struktur Database
+Nama database: kasir_db
+Tabel: transaksi
+CREATE TABLE transaksi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tanggal DATETIME,
+    total INT,
+    bayar INT,
+    kembalian INT
+);
+(Masukkan screenshot tabel di phpMyAdmin / HeidiSQL)
+2. Koneksi Database
+File koneksi dibuat agar aplikasi dapat terhubung ke database.
+public class Koneksi {
+    public static Connection getKoneksi() {
+        try {
+            String url = "jdbc:mysql://localhost/kasir_db";
+            String user = "root";
+            String pass = "";
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            return conn;
+        } catch (Exception e) {
+            System.out.println("Koneksi gagal: " + e.getMessage());
+            return null;
+        }
+    }
+}
+4.5 Implementasi Penyimpanan Data 
+Saat tombol Bayar ditekan, data akan disimpan ke database
+int JumlahBayar = Integer.parseInt(jumlah_bayar.getText());
+int JumlahHarga = Integer.parseInt(jumlah_harga.getText());
+if (JumlahBayar >= JumlahHarga) {
+    int kembalian = JumlahBayar - JumlahHarga;
+    jumlah_kembalian.setText(String.valueOf(kembalian));
+    try {
+        Connection conn = Koneksi.getKoneksi();
+        String sql = "INSERT INTO transaksi (tanggal, total, bayar, kembalian) VALUES (NOW(), ?, ?, ?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, JumlahHarga);
+        pst.setInt(2, JumlahBayar);
+        pst.setInt(3, kembalian);
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage())
+ }
+} else {
+    jumlah_kembalian.setText("Uang Anda Kurang");
