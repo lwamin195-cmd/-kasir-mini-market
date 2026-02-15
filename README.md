@@ -60,11 +60,11 @@ CREATE TABLE barang (
 
 4. Input Data Barang
 INSERT INTO barang (nama_barang, harga) VALUES
-('Susu', 3000000),
-('Teh', 4000000),
-('Coklat', 5000000),
-('Panda', 100000),
-('Adamsari', 500000);
+('Susu', 3000),
+('Teh', 4000),
+('Coklat', 5000),
+('Panda', 1000),
+('Adamsari', 5000);
 
 5. Buat Tabel Transaksi
 CREATE TABLE transaksi (
