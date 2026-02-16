@@ -248,4 +248,6 @@ Cocok untuk pembelajaran dan pengembangan lebih lanjut 🚀
 
 ---
 
+## link E-book
+https://ebook.webiot.id/ebooks/sistem-kasir-mini-market-dokumentasi-pengembangan-perangkat-lunak-berbasis-java-swing-dan-mysql
 
